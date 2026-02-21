@@ -1,0 +1,13 @@
+/target
+**/*.rs.bk
+Cargo.lock
+*.pyc
+__pycache__/
+*.so
+*.dylib
+*.pdb
+.env
+dist/
+*.egg-info/
+.venv/
+node_modules/
