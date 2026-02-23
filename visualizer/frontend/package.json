@@ -4,14 +4,16 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "lsof -ti:8000 | xargs kill -9 2>/dev/null; trap 'kill 0' EXIT; ../../.venv/bin/python -m uvicorn app:app --port 8000 --app-dir ../backend & vite",
+    "dev:frontend": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "pdfjs-dist": "^4.9.155",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

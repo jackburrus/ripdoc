@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { BenchmarkResults } from "../types";
 import * as api from "../api";
 
 interface Props {
   currentPage: number;
+  autoRun?: boolean;
 }
 
 const LIB_COLORS: Record<string, string> = {
@@ -20,16 +21,26 @@ const OP_LABELS: Record<string, string> = {
   chars: "Get Chars",
 };
 
-export default function BenchmarkPanel({ currentPage }: Props) {
+export default function BenchmarkPanel({ currentPage, autoRun }: Props) {
   const [results, setResults] = useState<BenchmarkResults | null>(null);
   const [running, setRunning] = useState(false);
   const [animate, setAnimate] = useState(false);
+  const autoRanRef = useRef(false);
 
   // Reset results when page changes
   useEffect(() => {
     setResults(null);
     setAnimate(false);
+    autoRanRef.current = false;
   }, [currentPage]);
+
+  // Auto-run on first load when autoRun is true
+  useEffect(() => {
+    if (autoRun && !autoRanRef.current && !running && !results) {
+      autoRanRef.current = true;
+      handleRun();
+    }
+  }, [autoRun, currentPage]);
 
   const handleRun = async () => {
     setRunning(true);
@@ -61,15 +72,27 @@ export default function BenchmarkPanel({ currentPage }: Props) {
 
   return (
     <div className="benchmark-panel">
-      <h3>Benchmark</h3>
+      <div className="benchmark-header">
+        <h3>Benchmark</h3>
+        <button
+          className="benchmark-run-btn"
+          onClick={handleRun}
+          disabled={running}
+        >
+          {running ? (
+            <>
+              <span className="benchmark-spinner" />
+              Running...
+            </>
+          ) : results ? "Re-run" : "Run Benchmark"}
+        </button>
+      </div>
 
-      <button
-        className="benchmark-run-btn"
-        onClick={handleRun}
-        disabled={running}
-      >
-        {running ? "Running..." : "Run Benchmark"}
-      </button>
+      {running && !results && (
+        <div className="benchmark-loading">
+          Benchmarking ripdoc vs pdfplumber, pymupdf, pdfminer...
+        </div>
+      )}
 
       {results && (
         <div className="benchmark-results">

@@ -1,0 +1,237 @@
+/* ═══════════════════════════════════════
+   Extraction Race — hero visual
+   ═══════════════════════════════════════ */
+
+.race {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  animation: riseIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+}
+
+.race__cols {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.race__col {
+  flex: 1;
+  min-width: 0;
+}
+
+.race__vs {
+  align-self: center;
+  margin-top: 28px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.12);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* ── Header (lib name + timer) ── */
+
+.race__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding: 0 2px;
+}
+
+.race__lib {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.race__lib--rip {
+  color: var(--accent);
+}
+
+.race__lib--plumber {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.race__timer {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.2);
+  transition: color 0.3s ease;
+}
+
+.race__timer--done {
+  color: var(--green);
+}
+
+/* ── Document card ── */
+
+.race__doc {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #080818;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.race__doc--done {
+  border-color: rgba(129, 140, 248, 0.25);
+  box-shadow: 0 0 20px rgba(129, 140, 248, 0.08), 0 0 40px rgba(129, 140, 248, 0.03);
+}
+
+.race__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ── Scan line ── */
+
+.race__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  top: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.race__scan--rip {
+  background: var(--accent);
+  box-shadow:
+    0 0 8px rgba(129, 140, 248, 0.6),
+    0 0 20px rgba(129, 140, 248, 0.25),
+    0 0 40px rgba(129, 140, 248, 0.1);
+  animation: scanRip 0.35s ease-out 0.8s both;
+}
+
+.race__scan--plumber {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
+  animation: scanPlumber 11.63s linear 0.8s both;
+}
+
+@keyframes scanRip {
+  from { top: 0%; opacity: 1; }
+  to   { top: 100%; opacity: 0.6; }
+}
+
+@keyframes scanPlumber {
+  from { top: 0%; }
+  to   { top: 100%; }
+}
+
+/* ── Completion flash ── */
+
+.race__flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(129, 140, 248, 0.12),
+    transparent 70%
+  );
+  animation: flashPulse 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes flashPulse {
+  0%   { opacity: 0; }
+  30%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Word boxes ── */
+
+.race__word {
+  /* subtle pop via CSS — no JS needed */
+}
+
+.race__table-detect {
+  /* table outline */
+}
+
+/* ── Footer (count + badge) ── */
+
+.race__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 0 2px;
+  min-height: 22px;
+}
+
+.race__count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.race__badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  animation: badgeFadeIn 0.3s ease-out both;
+}
+
+.race__badge--done {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--green);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.race__badge--slow {
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgeFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes badgePulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+/* ═══ Accessibility ═══ */
+
+@media (prefers-reduced-motion: reduce) {
+  .race__scan { display: none; }
+  .race__flash { display: none; }
+  .race, .race__badge { animation: none !important; opacity: 1 !important; }
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 768px) {
+  .race { max-width: 420px; }
+
+  .race__cols {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .race__vs {
+    align-self: center;
+    margin-top: 0;
+  }
+}

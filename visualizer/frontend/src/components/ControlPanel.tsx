@@ -9,7 +9,7 @@ interface Props {
 
 const LAYER_CONFIG: { key: LayerName; label: string; color: string }[] = [
   { key: "words", label: "Words", color: "#0064ff" },
-  { key: "chars", label: "Chars", color: "#ff0000" },
+  { key: "chars", label: "Chars", color: "#ff4444" },
   { key: "tables", label: "Tables", color: "#c800c8" },
   { key: "lines", label: "Lines", color: "#00b400" },
   { key: "rects", label: "Rects", color: "#ff8c00" },
@@ -26,23 +26,30 @@ export default function ControlPanel({ layers, counts, timings, onToggle }: Prop
   return (
     <div className="control-panel">
       <h3>Layers</h3>
-      {LAYER_CONFIG.map(({ key, label, color }) => (
-        <label key={key} className="layer-toggle">
-          <input
-            type="checkbox"
-            checked={layers[key]}
-            onChange={() => onToggle(key)}
-          />
-          <span className="layer-swatch" style={{ backgroundColor: color }} />
-          {label}
-          {counts[key] > 0 && (
-            <span className="layer-count">({counts[key]})</span>
-          )}
-          {timings[key] !== undefined && (
-            <span className="layer-timing">{formatTiming(timings[key])}</span>
-          )}
-        </label>
-      ))}
+      <div className="layer-grid">
+        {LAYER_CONFIG.map(({ key, label, color }) => {
+          const active = layers[key];
+          return (
+            <button
+              key={key}
+              className={`layer-chip ${active ? "layer-chip--active" : ""}`}
+              style={{
+                "--chip-color": color,
+              } as React.CSSProperties}
+              onClick={() => onToggle(key)}
+            >
+              <span className="layer-swatch" style={{ backgroundColor: color }} />
+              <span className="layer-chip-label">{label}</span>
+              {counts[key] > 0 && (
+                <span className="layer-count">{counts[key]}</span>
+              )}
+              {timings[key] !== undefined && (
+                <span className="layer-timing">{formatTiming(timings[key])}</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

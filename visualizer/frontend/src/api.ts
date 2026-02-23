@@ -24,10 +24,26 @@ async function fetchJSON<T>(url: string, method: "GET" | "POST" = "GET"): Promis
 export async function uploadPdf(file: File): Promise<UploadResult> {
   const form = new FormData();
   form.append("file", file);
-  const res = await fetch("/api/upload", { method: "POST", body: form });
+  let res: Response;
+  try {
+    res = await fetch("/api/upload", { method: "POST", body: form });
+  } catch {
+    throw new Error(
+      "Cannot reach the backend server.\n\n" +
+      "Start it with:\n" +
+      "  cd visualizer/backend && uvicorn app:app --port 8000"
+    );
+  }
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Upload failed: ${text}`);
+    let detail = `${res.status}`;
+    try {
+      const json = await res.json();
+      if (json.detail) detail = json.detail;
+    } catch {
+      const text = await res.text();
+      if (text) detail = text;
+    }
+    throw new Error(detail);
   }
   return res.json();
 }

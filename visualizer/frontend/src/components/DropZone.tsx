@@ -3,9 +3,10 @@ import { useState, useCallback, DragEvent } from "react";
 interface Props {
   onUpload: (file: File) => void;
   loading: boolean;
+  error?: string | null;
 }
 
-export default function DropZone({ onUpload, loading }: Props) {
+export default function DropZone({ onUpload, loading, error }: Props) {
   const [dragging, setDragging] = useState(false);
 
   const handleDrag = useCallback((e: DragEvent) => {
@@ -65,6 +66,11 @@ export default function DropZone({ onUpload, loading }: Props) {
         <>
           <p className="dropzone-icon">PDF</p>
           <p>Drop a PDF here or click to browse</p>
+          {error && (
+            <div className="dropzone-error">
+              <pre>{error}</pre>
+            </div>
+          )}
         </>
       )}
     </div>
