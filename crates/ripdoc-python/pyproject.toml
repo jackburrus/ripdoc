@@ -4,7 +4,8 @@ build-backend = "maturin"
 
 [project]
 name = "ripdoc"
-description = "100x faster PDF extraction. Drop-in pdfplumber replacement."
+description = "Rust-native PDF extraction. 73x faster than pdfplumber."
+readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT OR Apache-2.0"}
 classifiers = [
